@@ -65,7 +65,7 @@ CREATE TABLE photo(-- every photo should be assigned to an order and we also sto
     sent BOOLEAN DEFAULT 0, -- If sent, then 1
     FOREIGN KEY(employeeID) REFERENCES employee(ID)
     );
-    /*this table can help all the month EXPENSES to know using SUM(salary) FROM payout WHERE NOT sent=0*/
+    /*this table can help all the month EXPENSES to know using SELECT SUM(salary) FROM payout WHERE NOT sent=0*/
     
     CREATE TABLE Monfree( -- salary payout for every employee
     ID INTEGER NOT NULL UNIQUE PRIMARY KEY,
