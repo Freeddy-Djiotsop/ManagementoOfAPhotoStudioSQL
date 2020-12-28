@@ -8,6 +8,7 @@ CREATE DATABASE photoStudio;
 USE photoStudio;
 CREATE TABLE employee(-- The studio has employee(Mitarbeiter)
   ID INTEGER NOT NULL AUTO_INCREMENT, --we can use after creating this table ALTER TABLE employee AUTO_INCREMENT=10000; to set the start value, otherwise it starts at 1
+  --AUTO_INCREMENT ist valid for MySQL, AUTOINCREMENT for Access
   firstname VARCHAR(30) NOT NULL, --with not null we prevent Insertion anomaly, so the value must be always given, mit NOT NULL wird Einfügeanomalie verhindert, vorname muss immer angegeben werden
   surname VARCHAR(30) NOT NULL,
   street VARCHAR(50) NOT NULL,
