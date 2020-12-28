@@ -1,0 +1,32 @@
+--We create the Database
+
+CREATE DATABASE photoStudio;
+
+-- We need to create relation intances and associated attributes
+-- Wir legen erst Relationen mit ihren zugehörigen Daten an
+
+USE photoStudio;
+CREATE TABLE employee(-- The studio has employee(Mitarbeiter)
+  ID INTEGER NOT NULL,
+  firstname VARCHAR(30) NOT NULL, #with not null we prevent Insertion anomaly, so the value must be always given, mit NOT NULL wird Einfügeanomalie verhindert, vorname muss immer angegeben werden
+  surname VARCHAR(30) NOT NULL,
+  houseNumber VARCHAR(50) NOT NULL,
+  postCode VARCHAR(5) NOT NULL,/*The case of Germany*/
+  city VARCHAR(30) NOT NULL,
+  salary DOUBLE,-- can be undefined
+  PRIMARY KEY(ID));
+
+CREATE TABLE customer(-- he has customer(Kunde)
+  ID INTERGER NOT NULL PRIMARY KEY,
+  firstname VARCHAR(30) NOT NULL,
+  surname VARCHAR(30) NOT NULL,
+  email VARCHAR(60) NOT NULL);
+  
+  CREATE TABLE orderT(-- Customer can order and an employee does  it
+  ID INTEGER NOT NULL PRIMARY KEY,
+  employeeID INTEGER NOT NULL,
+  customerID INTEGER NOT NULL,
+  totalPrice DOUBLE,-- can be undefined at the start
+  oderDate DATE,
+  FOREIGN KEY(employeeID) REFERENCES employee(ID),
+  FOREIGN KEY(customerID) REFERENCES customer(ID));
