@@ -7,26 +7,69 @@ CREATE DATABASE photoStudio;
 
 USE photoStudio;
 CREATE TABLE employee(-- The studio has employee(Mitarbeiter)
-  ID INTEGER NOT NULL,
-  firstname VARCHAR(30) NOT NULL, #with not null we prevent Insertion anomaly, so the value must be always given, mit NOT NULL wird Einfügeanomalie verhindert, vorname muss immer angegeben werden
+  ID INTEGER NOT NULL UNIQUE,
+  firstname VARCHAR(30) NOT NULL, --with not null we prevent Insertion anomaly, so the value must be always given, mit NOT NULL wird Einfügeanomalie verhindert, vorname muss immer angegeben werden
   surname VARCHAR(30) NOT NULL,
-  houseNumber VARCHAR(50) NOT NULL,
+  street VARCHAR(50) NOT NULL,
+  houseNumber VARCHAR(10) NOT NULL,
   postCode VARCHAR(5) NOT NULL,/*The case of Germany*/
-  city VARCHAR(30) NOT NULL,
+  city VARCHAR(50) NOT NULL,
   salary DOUBLE,-- can be undefined
   PRIMARY KEY(ID));
 
 CREATE TABLE customer(-- he has customer(Kunde)
-  ID INTERGER NOT NULL PRIMARY KEY,
+  ID INTERGER NOT NULL UNIQUE PRIMARY KEY,
   firstname VARCHAR(30) NOT NULL,
   surname VARCHAR(30) NOT NULL,
   email VARCHAR(60) NOT NULL);
   
-  CREATE TABLE orderT(-- Customer can order and an employee does  it
-  ID INTEGER NOT NULL PRIMARY KEY,
+  CREATE TABLE camera(-- The work tool
+  serialID VARCHAR(50) NOT NULL UNIQUE PRIMARY KEY, --every camera has an unique serial number
+  maker VARCHAR(50) NOT NULL,
+  model VARCHAR(50) NOT NULL,
+  megapixel DOUBLE NOT NULL,
+  lightSensitivity VARCHAR(30) NOT NULL, -- we store the maximum available light sensitivity of the camera(die maximale verfügbare Lichtempfindlichkeit der Kamera)
+  NumberOfCrossSensors INTEGER NOT NULL
+  /*These last two attributes are very important and will help the photographer for creating successful shots
+  (Lichtempfindlichkeit und AnzahlDerKreuzsensoren helfen zur Erstellung gelungener Aufnahmen)*/
+  );
+  
+  CREATE TABLE orders(-- Customer can order and an employee does  it
+  ID INTEGER NOT NULL UNIQUE PRIMARY KEY,
   employeeID INTEGER NOT NULL,
   customerID INTEGER NOT NULL,
-  totalPrice DOUBLE,-- can be undefined at the start
+  totalPrice DOUBLE, -- can be undefined at the start
   oderDate DATE,
   FOREIGN KEY(employeeID) REFERENCES employee(ID),
   FOREIGN KEY(customerID) REFERENCES customer(ID));
+  
+
+CREATE TABLE photo(-- every photo should be assigned to an order and we also store the his camera
+  ID INTEGER NOT NULL UNIQUE PRIMARY KEY, -- we want every photo to be UNIQUE
+  orderID INTEGER NOT NULL,
+  cameraID VARCHAR(50) NOT NULL,
+  lightSensitivity VARCHAR(30) NOT NULL,
+  lensSpeed VARCHAR(10) NOT NULL, -- or f-number, ist die fotografische Lichtstärke(Blendenzahl)
+  ShutterSpeed VARCHAR(10) NOT NULL, --Verschlusszeit
+  /*We should store this 3 last values to enable digital post-processing
+  (Die 3 letzten werte müssen wir speichern, um eine spätere digitale Nachbearbeitung zu ermöglichen)*/
+  FOREIGN KEY(orderID) REFERENCES orders(ID),
+  FOREIGN KEY(cameraID) REFERENCES camera(serialID)
+  );
+  
+  CREATE TABLE payout( --salary payout for every employee
+    ID INTEGER NOT NULL UNIQUE PRIMARY KEY,
+    month DATE DEFAULT GETDATE,
+    employeeID INTEGER NOT NULL,
+    salary DOUBLE NOT NULL,
+    sent BOOLEAN DEFAULT 0, -- If sent, then 1
+    FOREIGN KEY(employeeID) REFERENCES employee(ID)
+    );
+    /*this table can help all the month EXPENSES to know using SUM(salary) FROM payout WHERE NOT sent=0*/
+    
+    CREATE TABLE Monfree( -- salary payout for every employee
+    ID INTEGER NOT NULL UNIQUE PRIMARY KEY,
+    month DATE DEFAULT GETDATE,
+    sent BOOLEAN DEFAULT 0); -- If sent, then 1
+    
+    
