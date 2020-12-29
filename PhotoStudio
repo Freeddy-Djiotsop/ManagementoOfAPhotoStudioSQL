@@ -20,14 +20,14 @@ CREATE TABLE employee(-- The studio has employee(Mitarbeiter)
   );
 
 CREATE TABLE customer(-- he has customer(Kunde)
-  ID INTERGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  ID INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
   firstname VARCHAR(30) NOT NULL,
   surname VARCHAR(30) NOT NULL,
   email VARCHAR(60) NOT NULL
   );
   
   CREATE TABLE camera(-- The work tool
-  serialID VARCHAR(50) NOT NULL UNIQUE PRIMARY KEY, --every camera has an unique serial number
+  serialID VARCHAR(50) NOT NULL UNIQUE PRIMARY KEY, /*every camera has an unique serial number*/
   maker VARCHAR(50) NOT NULL,
   model VARCHAR(50) NOT NULL,
   megapixel DOUBLE NOT NULL,
@@ -41,8 +41,9 @@ CREATE TABLE customer(-- he has customer(Kunde)
   ID INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
   employeeID INTEGER NOT NULL,
   customerID INTEGER NOT NULL,
-  totalPrice DOUBLE, -- can be undefined at the start
+  designation VARCHAR(50) NOT NULL, -- Bezeichnung
   oderDate DATE,
+  totalPrice DOUBLE, -- can be undefined at the start
   FOREIGN KEY(employeeID) REFERENCES employee(ID),
   FOREIGN KEY(customerID) REFERENCES customer(ID)
   );
@@ -50,9 +51,10 @@ CREATE TABLE customer(-- he has customer(Kunde)
 
 CREATE TABLE photo(-- every photo should be assigned to an order and we also store the his camera
   ID INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY, -- we want every photo to be UNIQUE
-  photoname VARCHAR(50) NOT NULL,-- every photo become automatic a name from the camera and we should store it here
   orderID INTEGER NOT NULL,
   cameraID VARCHAR(50) NOT NULL,
+  photoname VARCHAR(50) NOT NULL,-- every photo become automatic a name from the camera and we should store it here
+  megapixel DOUBLE NOT NULL,
   lightSensitivity VARCHAR(30) NOT NULL,
   lensSpeed VARCHAR(10) NOT NULL, -- or f-number, ist die fotografische Lichtstärke(Blendenzahl)
   ShutterSpeed VARCHAR(10) NOT NULL, --Verschlusszeit
